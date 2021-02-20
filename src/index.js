@@ -4,7 +4,7 @@ const plus = document.getElementById("add");
 const minus = document.getElementById("minus");
 const number = document.querySelector("span");
 
-const countModifier = (count === 0, action) => {
+const countModifier = (count = 0, action) => {
     // Modify State
     if (action.type === "ADD") {
         return count + 1;
@@ -18,8 +18,12 @@ const countModifier = (count === 0, action) => {
 // Store 생성
 const countStore = createStore(countModifier);
 
-// action 전달
-countStore.dispatch({type: "ADD"});
+// Store에 변화가 생겼을 때 할 일을 기재
+const onChange = () => {
+    number.innerText = countStore.getState();
+}
 
-// State 출력
-console.log(countStore.getState());
+countStore.subscribe(onChange);
+
+plus.addEventListener("click", () => countStore.dispatch({type: "ADD"}));
+minus.addEventListener("click", () => countStore.dispatch({type: "MINUS"}));
